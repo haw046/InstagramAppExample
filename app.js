@@ -9,7 +9,7 @@ var hashtag = require('./routes/hashtag');
 var index = require('./routes/index');
 //database setup
 var mongoose = require('mongoose');
-mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://localhost/instagramexample');
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/instagramexample');
 
 //Configures the Template engine
 app.engine('handlebars', handlebars());
@@ -30,4 +30,13 @@ app.post('/delete', index.deleteImage);
 app.set('port', process.env.PORT || 3000);
 http.createServer(app).listen(app.get('port'), function(){
 	console.log('Express server listening on port ' + app.get('port'));
+	ig.tags.info({
+		name: 'sushi',
+		complete: function(data){
+			console.log(data);
+		}
+
+	})
 });
+exit
+
