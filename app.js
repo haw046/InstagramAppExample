@@ -10,6 +10,22 @@ var index = require('./routes/index');
 //database setup
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/instagramexample');
+//add instagram api setup
+var ig = require('instagram-node-lib');
+ig.set('client_id', process.env.instagram_client_id);
+ig.set('client_secret',
+process.env.instagram_client_secret);
+
+var dotenv = require('dotenv');
+dotenv.load();
+
+ig.tags.info({
+		name: 'sushi',
+		complete: function(data){
+			console.log(data);
+		}
+
+	})
 
 //Configures the Template engine
 app.engine('handlebars', handlebars());
@@ -23,6 +39,7 @@ app.get('/', index.view);
 app.get('/hashtag', function (req, res) {
 	res.render('hashtag');
 })
+
 app.post('/hashtag', hashtag.getHashtag);
 app.post('/save', hashtag.saveFavorites);
 app.post('/delete', index.deleteImage);
@@ -30,13 +47,7 @@ app.post('/delete', index.deleteImage);
 app.set('port', process.env.PORT || 3000);
 http.createServer(app).listen(app.get('port'), function(){
 	console.log('Express server listening on port ' + app.get('port'));
-	ig.tags.info({
-		name: 'sushi',
-		complete: function(data){
-			console.log(data);
-		}
-
-	})
+	
 });
-exit
+
 
